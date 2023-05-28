@@ -4,8 +4,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Image,
-
+  Image
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -14,25 +13,29 @@ import { getLocation } from "../components/Location";
 import { Feed } from "../components/Feed";
 import { MenuModal } from "../components/MenuModal";
 
-export function Home({navigation}) {
+export function Home({ navigation }) {
   const [city, setCity] = useState("Carregando...");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
-    setIsModalOpen(!isModalOpen)
-  };
+
+  function openModal() {
+    setIsModalOpen(!isModalOpen);
+  }
 
   useEffect(() => {
     (async () => {
       let city = await getLocation();
 
-      if (city == null || city == 'null') setCity('Localização Recusada')
+      if (!city || city == null || city == 'null') setCity('Localização recusada')
       else setCity(city);
     })();
   }, []);
+
   return (
     <>
       <MenuModal isEnabled={isModalOpen} setEnabled={setIsModalOpen} />
+
       <View style={styles.containerPrincipal}>
+
         <View style={styles.container}>
           <View style={styles.BuscaA}>
             <View style={{ flexDirection: "row", gap: 4 }}>
@@ -102,15 +105,27 @@ export function Home({navigation}) {
 
         </View>
 
-        <TouchableOpacity
-          onPress={openModal}
-          style={[styles.botao, { width: '100%' }]}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <TouchableOpacity
+            onPress={openModal}
+            style={[styles.botao, { width: '48%' }]}>
 
-          <Text style={styles.textBotao}>
-            Sobre o App
-          </Text>
+            <Text style={styles.textBotao}>
+              Sobre o App
+            </Text>
 
-        </TouchableOpacity>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('create')}
+            style={[styles.botao, { width: '48%' }]}>
+
+            <Text style={styles.textBotao}>
+              Criar publicação
+            </Text>
+
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.feedDescriçao}>
 
@@ -133,7 +148,6 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
@@ -220,14 +234,11 @@ const styles = StyleSheet.create({
   },
 
   containerIcones: {
-    gap: 6,
     marginTop: 25,
     flexDirection: "row",
+    rowGap: 12,
     justifyContent: "space-between",
-
   },
-
-
 
   iconeApp: {
     width: 58,
@@ -235,13 +246,12 @@ const styles = StyleSheet.create({
   },
 
   icones: {
-    width: 125,
-    height: 120,
+    width: 100,
+    height: 100,
     backgroundColor: "#adc4a3",
     borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
-
   },
 
   iconeComida: {
